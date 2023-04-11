@@ -503,13 +503,14 @@ bool CDVDVideoCodecAndroidMediaCodec::Open(CDVDStreamInfo &hints, CDVDCodecOptio
       m_formatname = "amc-hevc";
 
       const auto settings = CServiceBroker::GetSettingsComponent()->GetSettings();
-      bool convertDovi{false};
+      int convertDovi{2};
       bool removeDovi{false};
       bool removeHdr10Plus{false};
 
       if (settings)
       {
-        convertDovi = settings->GetBool(CSettings::SETTING_VIDEOPLAYER_CONVERTDOVI);
+        convertDovi =
+            (settings) ? settings->GetInt(CSettings::SETTING_VIDEOPLAYER_CONVERTDOVI) : 2;
 
         const std::shared_ptr<CSettingList> allowedHdrFormatsSetting(
             std::dynamic_pointer_cast<CSettingList>(
@@ -573,7 +574,7 @@ bool CDVDVideoCodecAndroidMediaCodec::Open(CDVDStreamInfo &hints, CDVDCodecOptio
                 break;
               case 7:
                 // set profile 8 when converting
-                if (convertDovi && CJNIBase::GetSDKVersion() >= 27)
+                if ((convertDovi > 0) && CJNIBase::GetSDKVersion() >= 27)
                   profile = CJNIMediaCodecInfoCodecProfileLevel::DolbyVisionProfileDvheSt;
 
                 // Profile 7 is not commonly supported. Not setting the profile here
