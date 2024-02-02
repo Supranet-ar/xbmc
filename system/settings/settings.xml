@@ -496,7 +496,7 @@
           <constraints>
             <minimum>1</minimum>
             <step>1</step>
-            <maximum>100</maximum>
+            <maximum>1000</maximum>
           </constraints>
           <control type="spinner" format="string">
             <formatlabel>14045</formatlabel>
